@@ -1,0 +1,39 @@
+<!-- base.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Your Title Here{% endblock %}</title>
+    <!-- Include any global CSS or JavaScript files here -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Load Chart.js from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <div class="container">
+        <!-- Navbar or header if needed -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">Mortgage Calculator</a>
+            <!-- Add more navigation elements if needed -->
+        </nav>
+
+        <!-- Content block that child templates will fill -->
+        <div class="content">
+            {% block content %}{% endblock %}
+        </div>
+
+        <!-- Footer or additional elements if needed -->
+        <footer class="footer mt-auto py-3">
+            <div class="container text-center">
+                <span class="text-muted">Your footer content here</span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Include any global JavaScript files here -->
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

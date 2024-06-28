@@ -1,0 +1,160 @@
+<!-- amortization_schedule.html -->
+
+{% extends 'base.html' %}
+
+{% block title %}Amortization Schedule{% endblock %}
+
+{% block content %}
+<div class="mt-5">
+    <h1>Amortization Schedule</h1>
+
+    <div class="info-section">
+        <div id="chartContainer" class="chart-container"></div>
+        <div class="details-container">
+            <p><strong>Monthly Payment:</strong> ${{ monthly_payment }}</p>
+            <p><strong>Loan Amount:</strong> ${{ loan_amount }}</p>
+            <p><strong>Interest Rate:</strong> {{ interest_rate }}%</p>
+            <p><strong>Loan Term:</strong> {{ loan_term_years }} years</p>
+        </div>
+    </div>
+
+    <div id="amortizationChart" style="width: 800px; height: 400px;"></div>
+    <div id="comparisonChart" style="width: 800px; height: 400px; margin-top: 40px;"></div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Month</th>
+                <th>Principal Payment</th>
+                <th>Interest Payment</th>
+                <th>Remaining Balance</th>
+                <th>Total Paid</th>
+                <th>Total Rent Paid</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entry in schedule %}
+            <tr>
+                <td>{{ entry.Month }}</td>
+                <td>{{ entry.Principal }}</td>
+                <td>{{ entry.Interest }}</td>
+                <td>{{ entry.Remaining_Balance }}</td>
+                <td>{{ entry.Total_Paid }}</td>
+                <td>{{ entry.Total_Rent_Paid }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.2.2/dist/echarts.min.js"></script>
+    <script>
+        // Extracting the data directly from the schedule
+        var schedule = {{ schedule|safe }};
+        var labels = schedule.map(entry => entry.Month);
+        var principalPayments = schedule.map(entry => entry.Principal);
+        var interestPayments = schedule.map(entry => entry.Interest);
+        var totalPaid = schedule.map(entry => entry.Total_Paid);
+        var totalRentPaid = schedule.map(entry => entry.Total_Rent_Paid);
+
+        // Chart for Amortization Schedule
+        var amortizationChartDom = document.getElementById('amortizationChart');
+        var amortizationChart = echarts.init(amortizationChartDom);
+        var amortizationOption = {
+            title: {
+                text: 'Amortization Schedule',
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'cross'
+                }
+            },
+            legend: {
+                data: ['Principal Payment', 'Interest Payment']
+            },
+            grid: {
+                top: '20%',
+                left: '10%',
+                right: '10%',
+                bottom: '15%'
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: labels
+            },
+            yAxis: {
+                type: 'value',
+                axisLabel: {
+                    formatter: '${value}'
+                }
+            },
+            series: [
+                {
+                    name: 'Principal Payment',
+                    type: 'line',
+                    data: principalPayments
+                },
+                {
+                    name: 'Interest Payment',
+                    type: 'line',
+                    data: interestPayments
+                }
+            ]
+        };
+        amortizationChart.setOption(amortizationOption);
+
+        // Chart for Comparison of Total Costs
+        var comparisonChartDom = document.getElementById('comparisonChart');
+        var comparisonChart = echarts.init(comparisonChartDom);
+        var comparisonOption = {
+            title: {
+                text: 'Total Costs: Renting vs Mortgage',
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'cross'
+                }
+            },
+            legend: {
+                data: ['Total Paid for Mortgage', 'Total Rent Paid']
+            },
+            grid: {
+                top: '20%',
+                left: '10%',
+                right: '10%',
+                bottom: '15%'
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: labels
+            },
+            yAxis: {
+                type: 'value',
+                axisLabel: {
+                    formatter: '${value}'
+                }
+            },
+            series: [
+                {
+                    name: 'Total Paid for Mortgage',
+                    type: 'line',
+                    data: totalPaid
+                },
+                {
+                    name: 'Total Rent Paid',
+                    type: 'line',
+                    data: totalRentPaid
+                }
+            ]
+        };
+        comparisonChart.setOption(comparisonOption);
+    </script>
+{% endblock %}
