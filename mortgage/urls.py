@@ -3,6 +3,8 @@ from . import views
 
 urlpatterns = [
     path(
-        "", views.mortgage_view, name="mortgage"
-    ),  # Ensure 'views.mortgage_view' is a valid view
+        "mortage_payment_calculator/",
+        views.mortgage_calculator_view,
+        name="mortgage_payment",
+    ),
 ]

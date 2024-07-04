@@ -7,8 +7,69 @@
     <h1>Mortgage Calculator</h1>
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
+        <p>
+            <label for="{{ form.property_value.id_for_label }}">Property Value</label>
+            {{ form.property_value }}
+        </p>
+        <p>
+            <label for="{{ form.down_payment.id_for_label }}">Down Payment</label>
+            <input id="down_payment" name="{{ form.down_payment.name }}" type="number" min="0">
+        </p>
+        <p>
+            <label for="{{ form.down_payment_percentage.id_for_label }}">Down Payment (%)</label>
+            <input id="down_payment_percentage" name="{{ form.down_payment_percentage.name }}" type="number" min="0" max="100">
+        </p>
+        <p>
+            <label for="{{ form.interest_rate.id_for_label }}">Interest Rate (%)</label>
+            {{ form.interest_rate }}
+        </p>
+        <p>
+            <label for="{{ form.loan_term_years.id_for_label }}">Loan Term (years)</label>
+            {{ form.loan_term_years }}
+        </p>
+        <p>
+            <label for="{{ form.property_tax.id_for_label }}">Annual Property Tax</label>
+            {{ form.property_tax }}
+        </p>
+        <p>
+            <label for="{{ form.mip_pmi.id_for_label }}">Monthly MIP/PMI</label>
+            {{ form.mip_pmi }}
+        </p>
+        <p>
+            <label for="{{ form.initial_rent.id_for_label }}">Initial Rent</label>
+            {{ form.initial_rent }}
+        </p>
+        <p>
+            <label for="{{ form.annual_rent_increase_percent.id_for_label }}">Annual Rent Increase (%)</label>
+            {{ form.annual_rent_increase_percent }}
+        </p>
         <button type="submit" class="btn btn-primary">Calculate</button>
     </form>
 </div>
 {% endblock %}
+
+<script>
+window.onload = function() {
+    // Get the form fields
+    var downPaymentField = document.getElementById('down_payment');
+    var downPaymentPercentageField = document.getElementById('down_payment_percentage');
+    var propertyValueField = document.getElementById('property_value');
+
+    // Add event listeners to handle changes
+    downPaymentField.addEventListener('input', function() {
+        if (propertyValueField.value) {
+            downPaymentPercentageField.value = ((downPaymentField.value / propertyValueField.value) * 100).toFixed(2);
+            console.log('Down Payment:', downPaymentField.value);
+            console.log('Down Payment Percentage:', downPaymentPercentageField.value);
+        }
+    });
+
+    downPaymentPercentageField.addEventListener('input', function() {
+        if (propertyValueField.value) {
+            downPaymentField.value = ((downPaymentPercentageField.value / 100) * propertyValueField.value).toFixed(2);
+            console.log('Down Payment:', downPaymentField.value);
+            console.log('Down Payment Percentage:', downPaymentPercentageField.value);
+        }
+    });
+}
+</script>

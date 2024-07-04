@@ -3,7 +3,7 @@ from django import forms
 
 class MortgageForm(forms.Form):
     property_value = forms.FloatField(
-        label="Property Value", min_value=0, required=False
+        label="Property Value", min_value=0, required=True
     )
     down_payment = forms.FloatField(label="Down Payment", min_value=0, required=False)
 
@@ -18,7 +18,7 @@ class MortgageForm(forms.Form):
         label="Annual Property Tax", min_value=0, required=False
     )
     mip_pmi = forms.FloatField(label="Monthly MIP/PMI", min_value=0, required=False)
-    initial_rent = forms.FloatField(label="Initial Rent", min_value=0, required=True)
+    initial_rent = forms.FloatField(label="Initial Rent", min_value=0, required=False)
     annual_rent_increase_percent = forms.FloatField(
-        label="Annual Rent Increase (%)", min_value=0, max_value=100, required=True
+        label="Annual Rent Increase (%)", min_value=0, max_value=100, required=False
     )

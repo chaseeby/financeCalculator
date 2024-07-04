@@ -19,5 +19,8 @@ from django.urls import path, include
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", include("mortgage.urls")),  # Ensure 'mortgage' is a valid app name
+    path("", include("core.urls")),
+    path(
+        "mortgage_calculators/", include("mortgage.urls")
+    ),  # Ensure 'mortgage' is a valid app name
 ]

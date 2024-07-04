@@ -7,7 +7,6 @@ from typing import List, Dict
 class MortgageCalculator:
     def __init__(
         self,
-        loan_amount,
         interest_rate,
         loan_term_years,
         property_value=0,
@@ -18,13 +17,13 @@ class MortgageCalculator:
         initial_rent=0,
         annual_rent_increase_percent=0,
     ):
-        self.loan_amount = loan_amount
         self.interest_rate = interest_rate
         self.loan_term_years = loan_term_years
         self.property_value = property_value
         self.down_payment = down_payment
         self.property_tax = property_tax if property_tax is not None else 0
         self.mip_pmi = mip_pmi if mip_pmi is not None else 0
+        self.loan_amount = self.property_value - self.down_payment
         self.additional_payments = additional_payments if additional_payments else []
         self.initial_rent = initial_rent
         self.annual_rent_increase_percent = annual_rent_increase_percent
@@ -41,6 +40,9 @@ class MortgageCalculator:
             / (1 - (1 + self.interest_rate / 100 / 12) ** (-self.loan_term_years * 12))
         )
         return principal_payment + (self.mip_pmi or 0) + self.monthly_property_tax
+
+    def set_loan_amount(self):
+        self.loan_amount = self.property_value - self.down_payment
 
     def amortization_schedule(self):
         schedule = []

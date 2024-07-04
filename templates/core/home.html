@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Home{% endblock %}
+
+{% block extra_head %}
+    <style>
+        .calculator-link {
+            display: block;
+            margin: 10px 0;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <h1>Welcome to the Mortgage Calculator</h1>
+    <p>Choose a calculator to get started:</p>
+    <a href="{% url 'mortgage_payment' %}" class="calculator">Mortgage Payment Calculator</a>
+{% endblock %}
